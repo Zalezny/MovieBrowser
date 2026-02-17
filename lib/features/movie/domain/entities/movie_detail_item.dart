@@ -1,8 +1,8 @@
-class MovieDetails {
+class MovieDetailItem {
   final String title;
   final String content;
 
-  MovieDetails({
+  const MovieDetailItem({
     required this.title,
     required this.content,
   });

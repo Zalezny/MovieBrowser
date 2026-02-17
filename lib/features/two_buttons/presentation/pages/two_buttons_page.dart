@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_recruitment_task/pages/two_buttons/button_two_states.dart';
+import 'package:flutter_recruitment_task/features/two_buttons/presentation/widgets/button_two_states.dart';
 
 class TwoButtonsPage extends StatefulWidget {
   const TwoButtonsPage({super.key});

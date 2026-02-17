@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_recruitment_task/models/movie_details.dart';
+import 'package:flutter_recruitment_task/features/movie/domain/entities/movie_detail_item.dart';
+import 'package:flutter_recruitment_task/shared/widgets/list_divider.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   const MovieDetailsPage({super.key});
@@ -10,9 +11,9 @@ class MovieDetailsPage extends StatefulWidget {
 
 class MovieDetailsPageState extends State<MovieDetailsPage> {
   final _details = [
-    MovieDetails(title: 'Budget', content: '\$2400000'),
-    MovieDetails(title: 'Revenue', content: '\$10000000'),
-    MovieDetails(title: 'Should I watch it today?', content: 'Yes!'),
+    MovieDetailItem(title: 'Budget', content: '\$2400000'),
+    MovieDetailItem(title: 'Revenue', content: '\$10000000'),
+    MovieDetailItem(title: 'Should I watch it today?', content: 'Yes!'),
   ];
 
   @override
@@ -24,10 +25,7 @@ class MovieDetailsPageState extends State<MovieDetailsPage> {
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(),
         body: ListView.separated(
-          separatorBuilder: (context, index) => Container(
-            height: 1.0,
-            color: Colors.grey.shade300,
-          ),
+          separatorBuilder: (_, __) => const ListDivider(),
           itemBuilder: (context, index) => Container(
             padding: EdgeInsets.all(16.0),
             child: Column(

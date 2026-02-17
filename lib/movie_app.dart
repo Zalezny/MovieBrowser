@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_recruitment_task/pages/movie_details/movie_details_page.dart';
-import 'package:flutter_recruitment_task/pages/movie_list/movie_list_page.dart';
-import 'package:flutter_recruitment_task/pages/two_buttons/two_buttons_page.dart';
+import 'package:flutter_recruitment_task/core/router/app_router.dart';
 
 class MovieApp extends StatelessWidget {
   const MovieApp({super.key});
@@ -10,11 +8,7 @@ class MovieApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
         title: 'Movie Browser',
         theme: ThemeData(primarySwatch: Colors.amber),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => MovieListPage(),
-          '/details': (context) => MovieDetailsPage(),
-          '/two_buttons': (context) => TwoButtonsPage(),
-        },
+        initialRoute: AppRouter.movieList,
+        routes: AppRouter.routes,
       );
 }
