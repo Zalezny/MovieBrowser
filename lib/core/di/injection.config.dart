@@ -18,8 +18,12 @@ import 'package:flutter_recruitment_task/features/movie/data/repositories/movie_
     as _i131;
 import 'package:flutter_recruitment_task/features/movie/domain/repositories/movie_repository.dart'
     as _i732;
+import 'package:flutter_recruitment_task/features/movie/domain/use_cases/get_movie_details_use_case.dart'
+    as _i913;
 import 'package:flutter_recruitment_task/features/movie/domain/use_cases/search_movies_use_case.dart'
     as _i0;
+import 'package:flutter_recruitment_task/features/movie/presentation/cubit/movie_details_cubit.dart'
+    as _i81;
 import 'package:flutter_recruitment_task/features/movie/presentation/cubit/movie_list_cubit.dart'
     as _i407;
 import 'package:get_it/get_it.dart' as _i174;
@@ -42,10 +46,14 @@ extension GetItInjectableX on _i174.GetIt {
         () => networkModule.movieApiService);
     gh.lazySingleton<_i732.MovieRepository>(
         () => _i131.MovieRepositoryImpl(gh<_i800.MovieApiService>()));
+    gh.factory<_i913.GetMovieDetailsUseCase>(
+        () => _i913.GetMovieDetailsUseCase(gh<_i732.MovieRepository>()));
     gh.factory<_i0.SearchMoviesUseCase>(
         () => _i0.SearchMoviesUseCase(gh<_i732.MovieRepository>()));
     gh.factory<_i407.MovieListCubit>(
         () => _i407.MovieListCubit(gh<_i0.SearchMoviesUseCase>()));
+    gh.factory<_i81.MovieDetailsCubit>(
+        () => _i81.MovieDetailsCubit(gh<_i913.GetMovieDetailsUseCase>()));
     return this;
   }
 }
