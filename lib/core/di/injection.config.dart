@@ -10,10 +10,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
-import 'package:flutter_recruitment_task/core/di/modules/dio_module.dart'
-    as _i912;
+import 'package:flutter_recruitment_task/core/di/modules/network_module.dart'
+    as _i649;
 import 'package:flutter_recruitment_task/features/movie/data/datasources/movie_api_service.dart'
-    as _i122;
+    as _i800;
 import 'package:flutter_recruitment_task/features/movie/data/repositories/movie_repository_impl.dart'
     as _i131;
 import 'package:flutter_recruitment_task/features/movie/domain/repositories/movie_repository.dart'
@@ -34,14 +34,16 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    final dioModule = _$DioModule();
-    gh.singleton<_i361.Dio>(() => dioModule.dio);
+    final networkModule = _$NetworkModule();
+    gh.lazySingleton<_i361.Dio>(() => networkModule.dio);
+    gh.lazySingleton<_i800.MovieApiService>(
+        () => networkModule.movieApiService);
     gh.lazySingleton<_i732.MovieRepository>(
-        () => _i131.MovieRepositoryImpl(gh<_i122.MovieApiService>()));
+        () => _i131.MovieRepositoryImpl(gh<_i800.MovieApiService>()));
     gh.factory<_i0.SearchMoviesUseCase>(
         () => _i0.SearchMoviesUseCase(gh<_i732.MovieRepository>()));
     return this;
   }
 }
 
-class _$DioModule extends _i912.DioModule {}
+class _$NetworkModule extends _i649.NetworkModule {}
