@@ -12,10 +12,8 @@
 import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_recruitment_task/core/di/modules/dio_module.dart'
     as _i912;
-import 'package:flutter_recruitment_task/core/network/movie_api_client.dart'
-    as _i685;
-import 'package:flutter_recruitment_task/features/movie/data/data_sources/movie_remote_data_source.dart'
-    as _i425;
+import 'package:flutter_recruitment_task/features/movie/data/datasources/movie_api_service.dart'
+    as _i122;
 import 'package:flutter_recruitment_task/features/movie/data/repositories/movie_repository_impl.dart'
     as _i131;
 import 'package:flutter_recruitment_task/features/movie/domain/repositories/movie_repository.dart'
@@ -38,12 +36,8 @@ extension GetItInjectableX on _i174.GetIt {
     );
     final dioModule = _$DioModule();
     gh.singleton<_i361.Dio>(() => dioModule.dio);
-    gh.singleton<_i685.MovieApiClient>(
-        () => dioModule.movieApiClient(gh<_i361.Dio>()));
-    gh.factory<_i425.MovieRemoteDataSource>(
-        () => _i425.MovieRemoteDataSource(gh<_i685.MovieApiClient>()));
     gh.lazySingleton<_i732.MovieRepository>(
-        () => _i131.MovieRepositoryImpl(gh<_i425.MovieRemoteDataSource>()));
+        () => _i131.MovieRepositoryImpl(gh<_i122.MovieApiService>()));
     gh.factory<_i0.SearchMoviesUseCase>(
         () => _i0.SearchMoviesUseCase(gh<_i732.MovieRepository>()));
     return this;

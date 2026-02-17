@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of '../movie_api_client.dart';
+part of '../movie_api_service.dart';
 
 // dart format off
 
@@ -10,8 +10,8 @@ part of '../movie_api_client.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main
 
-class _MovieApiClient implements MovieApiClient {
-  _MovieApiClient(this._dio, {this.baseUrl, this.errorLogger});
+class _MovieApiService implements MovieApiService {
+  _MovieApiService(this._dio, {this.baseUrl, this.errorLogger});
 
   final Dio _dio;
 

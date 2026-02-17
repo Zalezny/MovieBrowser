@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_recruitment_task/core/network/movie_api_client.dart';
 import 'package:injectable/injectable.dart';
 
 @module
@@ -14,7 +13,4 @@ abstract class DioModule {
           receiveTimeout: const Duration(seconds: 30),
         ),
       );
-
-  @singleton
-  MovieApiClient movieApiClient(Dio dio) => MovieApiClient(dio);
 }

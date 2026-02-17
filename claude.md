@@ -16,8 +16,6 @@ lib/
 │   │   └── injection.config.dart  # Auto-generated — do not edit
 │   ├── error/                     # Shared failure types
 │   │   └── failure.dart           # Sealed Failure hierarchy
-│   ├── network/                   # Retrofit API client
-│   │   └── movie_api_client.dart
 │   └── router/                    # App-level routing
 │       └── app_router.dart
 │
@@ -28,8 +26,8 @@ lib/
 └── features/                      # One sub-folder per feature
     ├── <feature>/
     │   ├── data/                  # Data layer
-    │   │   ├── data_sources/      # Remote / local data sources
-    │   │   ├── models/            # JSON models (with .g.dart in models/generated/)
+    │   │   ├── data_sources/      # Remote / local data sources + Retrofit API clients
+    │   │   ├── models/            # DTOs (with .g.dart in models/generated/)
     │   │   └── repositories/      # Repository implementations
     │   ├── domain/                # Domain layer (pure Dart, no Flutter/external deps)
     │   │   ├── entities/          # Domain entities
@@ -57,9 +55,11 @@ lib/
 
 HTTP is handled by **[Dio](https://pub.dev/packages/dio)** configured in `DioModule` and **[Retrofit](https://pub.dev/packages/retrofit)** for type-safe API definitions.
 
+**Convention: Retrofit API clients live in the feature's `data/data_sources/` folder** (e.g. `features/movie/data/data_sources/movie_api_client.dart`). Register them in `DioModule`.
+
 ### Adding a new endpoint
 
-1. Add the method to the appropriate `@RestApi` client in `lib/core/network/` (or create a new one for a different API).
+1. Add the method to the feature's `@RestApi` client in `data/data_sources/`.
 2. Annotate with `@GET`, `@POST`, etc. and `@Query` / `@Path` / `@Body` parameters.
 3. Run `dart run build_runner build --delete-conflicting-outputs`.
 
@@ -69,7 +69,7 @@ abstract class MovieApiClient {
   factory MovieApiClient(Dio dio, {String baseUrl}) = _MovieApiClient;
 
   @GET('/3/search/movie')
-  Future<MovieListModel> searchMovies(
+  Future<MovieListDto> searchMovies(
     @Query('api_key') String apiKey,
     @Query('query') String query,
   );
@@ -77,6 +77,33 @@ abstract class MovieApiClient {
 ```
 
 Dio base URL and timeouts are configured in `lib/core/di/modules/dio_module.dart`.
+
+---
+
+## Environment variables — flutter_dotenv
+
+Secrets and config values are stored in **`.env`** (git-ignored) and read via [flutter_dotenv](https://pub.dev/packages/flutter_dotenv).
+
+- `.env` — local secrets, never committed (listed in `.gitignore`)
+- `.env.example` — committed template with placeholder values
+
+### Setup
+
+`.env` is registered as a Flutter asset in `pubspec.yaml` and loaded in `main()`:
+
+```dart
+await dotenv.load(fileName: '.env');
+```
+
+### Reading a value
+
+```dart
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final apiKey = dotenv.env['API_KEY'] ?? '';
+```
+
+When adding a new variable, update **both** `.env` and `.env.example`.
 
 ---
 
@@ -199,7 +226,7 @@ The project uses `build_runner` for three generators. All `.g.dart` files are pl
 | Generator | Output |
 |---|---|
 | `json_serializable` | `models/generated/<model>.g.dart` |
-| `retrofit_generator` | `network/generated/<client>.g.dart` |
+| `retrofit_generator` | `data_sources/generated/<client>.g.dart` |
 | `injectable_generator` | `core/di/injection.config.dart` |
 
 Use `part 'generated/<file>.g.dart';` in every source file that needs generated code.
