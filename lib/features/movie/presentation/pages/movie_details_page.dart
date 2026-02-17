@@ -27,6 +27,7 @@ class MovieDetailsPageState extends State<MovieDetailsPage> {
         body: ListView.separated(
           separatorBuilder: (_, __) => const ListDivider(),
           itemBuilder: (context, index) => Container(
+            key: ValueKey(_details[index].title),
             padding: EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

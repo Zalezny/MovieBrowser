@@ -20,6 +20,8 @@ import 'package:flutter_recruitment_task/features/movie/domain/repositories/movi
     as _i732;
 import 'package:flutter_recruitment_task/features/movie/domain/use_cases/search_movies_use_case.dart'
     as _i0;
+import 'package:flutter_recruitment_task/features/movie/presentation/cubit/movie_list_cubit.dart'
+    as _i407;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
@@ -42,6 +44,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i131.MovieRepositoryImpl(gh<_i800.MovieApiService>()));
     gh.factory<_i0.SearchMoviesUseCase>(
         () => _i0.SearchMoviesUseCase(gh<_i732.MovieRepository>()));
+    gh.factory<_i407.MovieListCubit>(
+        () => _i407.MovieListCubit(gh<_i0.SearchMoviesUseCase>()));
     return this;
   }
 }

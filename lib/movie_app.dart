@@ -5,10 +5,9 @@ class MovieApp extends StatelessWidget {
   const MovieApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
+  Widget build(BuildContext context) => MaterialApp.router(
         title: 'Movie Browser',
         theme: ThemeData(primarySwatch: Colors.amber),
-        initialRoute: AppRouter.movieList,
-        routes: AppRouter.routes,
+        routerConfig: AppRouter.router,
       );
 }

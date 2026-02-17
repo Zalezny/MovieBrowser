@@ -10,6 +10,10 @@ class SearchMoviesUseCase {
 
   SearchMoviesUseCase(this._repository);
 
-  Future<Either<Failure, List<Movie>>> call(String query) =>
-      _repository.searchMovies(query);
+  Future<Either<Failure, List<Movie>>> call(String query) async {
+    final result = await _repository.searchMovies(query);
+    return result.map(
+      (movies) => movies..sort((a, b) => b.voteAverage.compareTo(a.voteAverage)),
+    );
+  }
 }
