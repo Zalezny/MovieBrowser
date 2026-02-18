@@ -2,6 +2,39 @@
 
 This app is a part of recruitment task for a Flutter Developer position at Droids On Roids. It allows users to browse movie database and look for some interesting financial statistics. It uses The Movie Database API as a source of data about movies, its documentation is available [here](https://developers.themoviedb.org/3/getting-started/introduction).
 
+## Architecture
+
+The project follows a **feature-first + clean architecture** approach, ensuring the codebase is scalable, maintainable, and easy to work with as it grows.
+
+Each feature is self-contained under `lib/features/<feature>/` and split into three layers:
+
+- **domain** — pure Dart business logic (entities, repository interfaces, use cases). No Flutter or external dependencies.
+- **data** — API clients (Retrofit), DTOs, and repository implementations.
+- **presentation** — pages and widgets, communicating with the domain layer only via use cases.
+
+Shared infrastructure (DI, routing, error types) lives in `lib/core/`, and reusable UI components in `lib/shared/`.
+
+This separation keeps features independent, makes testing straightforward, and allows the team to scale the app without coupling between layers.
+
+## Quick install
+
+**Prerequisites:** Flutter SDK, Dart, and a [TMDB API key](https://www.themoviedb.org/settings/api).
+
+```bash
+# 1. Clone the repository
+git clone <repo-url>
+cd flutter_recruitment_task
+
+# 2. Install dependencies
+flutter pub get
+ge
+# 4. Generate code (Retrofit, JSON models, DI)
+dart run build_runner build --delete-conflicting-outputs
+
+# 5. Run the app
+flutter run
+```
+
 ## Recruitment task
 
 Right now, app consists of only one screen: movie list. It allows user to search movies in The Movie Database. Your task is to add some new features to this app:
