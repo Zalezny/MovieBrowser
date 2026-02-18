@@ -10,16 +10,16 @@ class SearchBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.amberAccent,
           border: Border(
-            bottom: BorderSide(color: Colors.black.withValues(alpha: 0.1)),
+            bottom: BorderSide(color: Color(0x1A000000)),
           ),
         ),
         child: TextField(
           textAlignVertical: TextAlignVertical.center,
           textInputAction: TextInputAction.search,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             prefixIcon: Icon(Icons.search),
             border: InputBorder.none,
             hintText: 'Search...',

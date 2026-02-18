@@ -7,5 +7,5 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await configureDependencies();
-  runApp(MovieApp());
+  runApp(const MovieApp());
 }

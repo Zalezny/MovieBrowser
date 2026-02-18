@@ -14,13 +14,11 @@ class MovieListPage extends StatelessWidget {
         appBar: AppBar(
           actions: [
             IconButton(
-              icon: Icon(Icons.movie_creation_outlined),
-              onPressed: () {
-                //TODO implement navigation
-              },
+              icon: const Icon(Icons.movie_creation_outlined),
+              onPressed: () {},
             ),
           ],
-          title: Text('Movie Browser'),
+          title: const Text('Movie Browser'),
         ),
         body: Column(
           children: [

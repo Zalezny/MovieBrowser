@@ -24,7 +24,7 @@ class AppRouter {
       GoRoute(
         path: _movieDetailsPath,
         builder: (context, state) {
-          final movieId = int.parse(state.pathParameters['movieId']!);
+          final movieId = int.tryParse(state.pathParameters['movieId'] ?? '') ?? 0;
           return BlocProvider(
             create: (_) => getIt<MovieDetailsCubit>()..getMovieDetails(movieId),
             child: const MovieDetailsPage(),

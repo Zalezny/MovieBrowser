@@ -1,18 +1,26 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_recruitment_task/core/di/injection.dart';
+import 'package:flutter_recruitment_task/core/config/app_config.dart';
 import 'package:flutter_recruitment_task/features/movie/data/datasources/movie_api_service.dart';
 import 'package:injectable/injectable.dart';
 
 @module
 abstract class NetworkModule {
   @lazySingleton
-  Dio get dio => Dio(
+  AppConfig get appConfig => AppConfig(
+        apiKey: dotenv.env['API_KEY'] ?? '',
+        baseUrl: dotenv.env['BASE_URL'] ?? '',
+      );
+
+  @lazySingleton
+  Dio dio(AppConfig config) => Dio(
         BaseOptions(
-          baseUrl: dotenv.env['BASE_URL'] ?? '',
+          baseUrl: config.baseUrl,
+          connectTimeout: const Duration(seconds: 30),
+          receiveTimeout: const Duration(seconds: 30),
         ),
       );
 
   @lazySingleton
-  MovieApiService get movieApiService => MovieApiService(getIt());
+  MovieApiService movieApiService(Dio dio) => MovieApiService(dio);
 }

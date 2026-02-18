@@ -10,6 +10,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:dio/dio.dart' as _i361;
+import 'package:flutter_recruitment_task/core/config/app_config.dart' as _i458;
 import 'package:flutter_recruitment_task/core/di/modules/network_module.dart'
     as _i649;
 import 'package:flutter_recruitment_task/features/movie/data/datasources/movie_api_service.dart'
@@ -41,11 +42,14 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final networkModule = _$NetworkModule();
-    gh.lazySingleton<_i361.Dio>(() => networkModule.dio);
+    gh.lazySingleton<_i458.AppConfig>(() => networkModule.appConfig);
+    gh.lazySingleton<_i361.Dio>(() => networkModule.dio(gh<_i458.AppConfig>()));
     gh.lazySingleton<_i800.MovieApiService>(
-        () => networkModule.movieApiService);
-    gh.lazySingleton<_i732.MovieRepository>(
-        () => _i131.MovieRepositoryImpl(gh<_i800.MovieApiService>()));
+        () => networkModule.movieApiService(gh<_i361.Dio>()));
+    gh.lazySingleton<_i732.MovieRepository>(() => _i131.MovieRepositoryImpl(
+          gh<_i800.MovieApiService>(),
+          gh<_i458.AppConfig>(),
+        ));
     gh.factory<_i913.GetMovieDetailsUseCase>(
         () => _i913.GetMovieDetailsUseCase(gh<_i732.MovieRepository>()));
     gh.factory<_i0.SearchMoviesUseCase>(
