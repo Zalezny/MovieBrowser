@@ -1,41 +1,49 @@
-import 'package:dartz/dartz.dart';
+import 'package:dartz/dartz.dart' hide State;
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_recruitment_task/core/config/app_config.dart';
 import 'package:flutter_recruitment_task/core/di/injection.dart';
-import 'package:flutter_recruitment_task/core/error/failure.dart';
 import 'package:flutter_recruitment_task/features/movie/domain/entities/movie.dart';
 import 'package:flutter_recruitment_task/features/movie/domain/entities/movie_details.dart';
 import 'package:flutter_recruitment_task/features/movie/domain/repositories/movie_repository.dart';
 import 'package:flutter_recruitment_task/movie_app.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:mocktail/mocktail.dart';
 
-class _FakeMovieRepository implements MovieRepository {
-  @override
-  Future<Either<Failure, List<Movie>>> searchMovies(String query) async => right([
-        const Movie(id: 1, title: 'Batman Begins', voteAverage: 8.3),
-        const Movie(id: 2, title: 'The Dark Knight', voteAverage: 9.0),
-      ]);
-
-  @override
-  Future<Either<Failure, MovieDetails>> getMovieDetails(int id) async => right(
-        MovieDetails(
-          id: id,
-          title: 'The Dark Knight',
-          budget: 185000000,
-          revenue: 1004558444,
-        ),
-      );
-}
+class MockMovieRepository extends Mock implements MovieRepository {}
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
+  final mockMovieRepository = MockMovieRepository();
+
   setUpAll(() async {
-    dotenv.testLoad(fileInput: 'API_KEY=test_key\nBASE_URL=https://api.themoviedb.org');
     await configureDependencies();
+
     getIt.allowReassignment = true;
-    getIt.registerLazySingleton<MovieRepository>(() => _FakeMovieRepository());
+    getIt
+      ..registerSingleton<AppConfig>(
+        const AppConfig(apiKey: 'test_key', baseUrl: 'https://api.themoviedb.org'),
+      )
+      ..registerLazySingleton<MovieRepository>(() => mockMovieRepository);
+
+    when(() => mockMovieRepository.searchMovies(any())).thenAnswer(
+      (_) async => right([
+        const Movie(id: 1, title: 'Batman Begins', voteAverage: 8.3),
+        const Movie(id: 2, title: 'The Dark Knight', voteAverage: 9.0),
+      ]),
+    );
+
+    when(() => mockMovieRepository.getMovieDetails(any())).thenAnswer(
+      (_) async => right(
+        const MovieDetails(
+          id: 1,
+          title: 'The Dark Knight',
+          budget: 185000000,
+          revenue: 1004558444,
+        ),
+      ),
+    );
   });
 
   testWidgets('search shows movies and tapping opens details page', (tester) async {
@@ -44,7 +52,7 @@ void main() {
 
     // Movie list page is shown with search box
     expect(find.text('Movie Browser'), findsOneWidget);
-    expect(find.bySemanticsLabel('Search...'), findsNothing);
+    expect(find.bySemanticsLabel('Search...'), findsOneWidget);
     expect(find.byTooltip('Search...'), findsNothing);
 
     // Enter a search query and submit

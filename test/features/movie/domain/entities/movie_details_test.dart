@@ -2,9 +2,9 @@ import 'package:flutter_recruitment_task/features/movie/domain/entities/movie_de
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  // January 5, 2025 is a Sunday
+  // Sunday
   final sunday = DateTime(2025, 1, 5);
-  // January 6, 2025 is a Monday
+  // Monday
   final monday = DateTime(2025, 1, 6);
 
   MovieDetails makeMovie({required int budget, required int revenue}) =>
